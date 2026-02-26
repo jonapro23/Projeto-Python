@@ -6,20 +6,17 @@
 </head>
 <body>
 
-    <h3>Cadastro</h3>
+<div class="container">
+    <h1>Cadastro</h1>
 
-    <form action="/cadastrar" method="POST">
-        Nome:<br>
-        <input type="text" name="nome"><br><br>
-
-        Email:<br>
-        <input type="email" name="email"><br><br>
-
-        <button type="submit">Salvar</button>
+    <form method="POST">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <button type="submit">Cadastrar</button>
     </form>
 
-    <br>
     <a href="/usuarios">Ver usuários</a>
+</div>
 
 </body>
 </html>

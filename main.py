@@ -9,18 +9,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Modelo
+
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100))
 
-# Criar banco
+
 with app.app_context():
     db.create_all()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
