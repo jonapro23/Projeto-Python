@@ -1,46 +1,42 @@
-from flask  import Flask 
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config.from_object('config.Config')
+
+# Banco SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///usuarios.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+# Modelo
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(120), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    nome = db.Column(db.String(100))
 
+# Criar banco
 with app.app_context():
     db.create_all()
 
-@app.route("/lista")
-def home():
-    return "lista de usuários"
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route("/cadastro")
-def cadastro():
-    return "cadastrar usuários"
+@app.route('/cadastrar', methods=['POST'])
+def cadastrar():
+    nome = request.form['nome']
 
-def adicionar_usuario(nome, email):
-    novo_usuario = Usuario(nome=nome, email=email)
-    db.session.add(novo_usuario)
+
+    novo = Usuario(nome=nome)
+    db.session.add(novo)
     db.session.commit()
 
-    return f"Usuário {nome} adicionado com sucesso!"  
-    return f"Usuário {email} adicionado com sucesso!"   
-    return f"Usuário {nome} e {email} adicionado com sucesso!" 
-    return redirect(url_for('home'))
+    return redirect('/listar')
 
-@app.route("/adicionar_usuario/<nome>/<email>")
-def adicionar_usuario_route(nome, email):
-    return adicionar_usuario(nome, email)
-
-@app.route("/usuarios")
-def listar_usuarios():
+@app.route('/listar')
+def listar():
     usuarios = Usuario.query.all()
-    return "<br>".join([f"{usuario.nome} - {usuario.email}" for usuario in usuarios])
+    return render_template('listar.html', usuarios=usuarios)
 
-if __name__ == "__main__":  app.run(debug=True)
-
-
+if __name__ == '__main__':
+    app.run(debug=True)
