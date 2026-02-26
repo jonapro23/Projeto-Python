@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usuários</title>
+</head>
+<body>
+
+    <h3>Lista de usuários</h3>
+
+    {% for usuario in usuarios %}
+        <p>{{ usuario.nome }} - {{ usuario.email }}</p>
+    {% endfor %}
+
+    <br>
+    <a href="/">Voltar</a>
+
+</body>
+</html>
